@@ -1,19 +1,20 @@
-function increasingTriplet(nums) {
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var increasingTriplet = function (nums) {
+  let min = nums[0];
+  let middle = Infinity;
 
-  var m; // mininum
-  var m2; // sec mininum
-
-  for (var i = 0; i < nums.length; i++) {
-    var n = nums[i];
-    if (m === undefined || n <= m) {
-      m = n;
-    } else /* n > m */ {
-      if (m2 === undefined || n <= m2) {
-        m2 = n;
-      } else {
-        return true;
-      }
+  for (num of nums) {
+    if (num <= min) {
+      min = num;
+    } else if (num <= middle) {
+      middle = num;
+    } else {
+      // this means min < middle < num
+      return true;
     }
   }
   return false;
-}
+};

@@ -1,50 +1,59 @@
- function threeSum(nums) {
-     let length = nums.length;
-     let sumArray = [];
-     let firstNum;
-     let secondNum;
-     let finalNum;
-     nums.sort((a, b) => a - b);
-     for (let i = 0; i < length - 2; i++) {
-         firstNum = nums[i];
-         if (firstNum > 0 && i != 0) {
-             break;
-         }
-         if (firstNum == nums[i - 1]) {
-             continue;
-         } else {
-             let j = i + 1;
-             let k = length - 1;
-             while (j < k) {
-                 if (nums[j] + nums[k] + firstNum > 0) {
-                     --k;
-                     while (nums[k] == nums[k + 1]) {
-                         --k;
-                     }
-                     continue;
-                 }
-                 if (nums[j] + nums[k] + firstNum < 0) {
-                     ++j;
-                     while (nums[j] == nums[j - 1]) {
-                         ++j;
-                     }
-                     continue;
-                 }
+function twoSum(sumArray, nums, parentIndex) {
+    let smallIndex = parentIndex + 1,
+        bigIndex = nums.length - 1,
+        parentNum = nums[parentIndex];
 
-                 if (nums[j] + nums[k] + firstNum == 0) {
-                     sumArray.push([nums[j], nums[k], firstNum]);
-                     --k;
-                     while (nums[k] == nums[k + 1]) {
-                         --k;
-                     }
-                     ++j;
-                     while (nums[j] == nums[j - 1]) {
-                         ++j;
-                     }
-                     continue;
-                 }
-             }
-         }
-     }
-     return sumArray;
- };
+    while (smallIndex < bigIndex) {
+        let smallNum = nums[smallIndex],
+            bigNum = nums[bigIndex];
+        let sum = smallNum + bigNum + parentNum;
+        if (sum > 0) {
+            bigIndex--;
+            while (nums[bigIndex] === nums[bigIndex + 1]) {
+                bigIndex--;
+            }
+            continue;
+        }
+        if (sum < 0) {
+            smallIndex++;
+            while (nums[smallIndex] === nums[smallIndex - 1]) {
+                smallIndex++;
+            }
+            continue;
+        }
+
+        if (sum === 0) {
+            sumArray.push([smallNum, bigNum, parentNum]);
+            bigIndex--;
+            while (nums[bigIndex] === nums[bigIndex + 1]) {
+                bigIndex--;
+            }
+
+            smallIndex++;
+            while (nums[smallIndex] === nums[smallIndex - 1]) {
+                smallIndex++;
+            }
+
+            continue;
+        }
+    }
+}
+
+function threeSum(nums) {
+    let length = nums.length,
+        sumArray = [];
+    nums.sort((a, b) => a - b);
+    for (let ii = 0; ii < length - 2; ii++) {
+        let parentNum = nums[ii];
+        if (parentNum > 0 && ii !== 0) {
+            break;
+        }
+        if (parentNum === nums[ii - 1]) {
+            continue;
+        } else {
+            twoSum(sumArray, nums, ii);
+        }
+    }
+
+    return sumArray;
+}

@@ -25,29 +25,27 @@ var reverseList = function(head) {
     if (!head || !head.next){
         return head;
     }
-    let reversedListNode = {};
     
-    var traverse = function(currentNode, reversedNode, counter){
-        if (!currentNode.next){
-            let nodeToReturn = new ListNode(currentNode.val);
-            nodeToReturn.next = reversedNode;
-            return nodeToReturn;
+    var reverseNode = {};
+    var counter = 0;
+    function traverse(node, reverseNode, counter){        
+        if (!node.next){
+            var finalReverseNode = new ListNode(node.val);
+            finalReverseNode.next = reverseNode;
+            return finalReverseNode;
         }
-
-        let newReversedNode = new ListNode(currentNode.val);
-        newReversedNode.next = reversedNode;
         
-        /* first normal node = last reversed node
-         * last reversed node should have next = null
-         */
+        var newReverseNode = new ListNode(node.val);
+
         if (counter === 0){
-            newReversedNode.next = null;            
+            newReverseNode.next = null;
+        } else {
+            newReverseNode.next = reverseNode;
         }
+        
         counter++;
-        return traverse(currentNode.next, newReversedNode, counter);
+        return traverse(node.next, newReverseNode, counter);
     }
     
-    
-    let final = traverse(head, reversedListNode, 0);
-    return final;
+    return traverse(head, reverseNode, counter);
 };

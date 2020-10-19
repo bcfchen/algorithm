@@ -18,30 +18,21 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
-    let deltaMap = {};
-    let counter = 0;
-    // create a map with the delta as key, and stores the index of the current element
-    for(num of nums){
-        let delta = target - num;
-        deltaMap[delta] = {
-            val: num,
-            index: counter
-        }
-        counter++;
+    var indices = []; 
+    var map = {};
+    for(var ii=0;ii<nums.length;ii++){
+        var numVal = nums[ii];
+        map[numVal] = ii;
     }
     
-    let counter2 = 0;
-    for(num of nums){
-        // check if the delta is the same value as the element itself. i.e.
-        // target= 6, nums=[3, 2, 4] the num 3 would be problematic since delta=3 and num also is 3
-        // in this case we'd want to skip over the 3
-        if (deltaMap[num] && counter2 !== deltaMap[num].index){
-            // we've found it!
-            return [counter2, deltaMap[num].index]    
+    for(var kk=0;kk<nums.length;kk++){
+        var val = nums[kk];
+        var diff = target-val;
+
+        if((map[diff] || map[diff] === 0)){
+            if(kk !== map[diff]){
+            return [kk, map[diff]];                
+            }
         }
-        
-        counter2++;
     }
-    
-    return [];
 };

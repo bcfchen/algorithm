@@ -24,5 +24,20 @@
  * @return {number}
  */
 var strStr = function(haystack, needle) {
-    return haystack.indexOf(needle);
+    if (!needle || needle.length === 0){
+        return 0;
+    }
+    
+    var firstCharOfNeedle = needle[0];
+    for(var counter=0;counter<haystack.length;counter++){
+        var haystackFirstChar = haystack[counter];
+        if (haystackFirstChar === firstCharOfNeedle){
+            var haystackSliced = haystack.slice(counter, counter+needle.length);
+            if (haystackSliced === needle){
+                return counter;
+            }
+        }
+    }
+    
+    return -1;
 };

@@ -21,32 +21,26 @@
  * @param {number[]} digits
  * @return {number[]}
  */
+/**
+ * @param {number[]} digits
+ * @return {number[]}
+ */
 var plusOne = function(digits) {
-    let hasCarry = false;
-    for(let ii=digits.length-1;ii>=0;ii--){
-        // handle scenario like [1, 2, 3]
-        // when see 3, increment and skip out of loop
-        if (digits[ii] !== 9){
-            digits[ii]++;
-            // if hasCarry=true it must've been set by one of the previous digits
-            // sine we've already increment this digit (ex. the "2" in [1, 2, 9] will now become "3"
-            // and 9 was already set to 0 in the previous loop), we can set hasCarry to false
-            if (hasCarry){
-                hasCarry = false;
-            }
-            break;
+    // reverse iterate from the back. if i am 10 after addition, then increment next elem
+    var shouldIncrementNeighbor = true;
+    for(var counter=digits.length-1;counter>=0;counter--){
+        if (shouldIncrementNeighbor === true){
+            digits[counter] ++;
+            shouldIncrementNeighbor = false;
         }
-        
-        // if digit is 9, then make digit 0 and toggle hasCarry to true
-        if (digits[ii] === 9){
-            digits[ii] = 0;
-            hasCarry = true;
+        if (digits[counter] === 10){
+            digits[counter] = 0;
+            shouldIncrementNeighbor = true;
         } 
     }
     
-    // if hasCarry is still true it means we must've encountered a case like [9, 9].
-    // since we've already set the array to [0, 0] at this point we now need to add '1' in front
-    if (hasCarry){
+    // after iteration, check first elem. if 0, then shift 1 in front
+    if (digits[0] === 0){
         digits.unshift(1);
     }
     

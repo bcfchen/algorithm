@@ -21,12 +21,13 @@ function bigIntegerAddition(arr1, arr2) {
     let carry = 0;
     // we iterate backwards since that's how addition works
     for (let ii = bigArr.length - 1; ii >= 0; ii--) {
-        const sum = smallArr[ii] + bigArr[ii];
-        const smallestDigit = sum % 10 + carry;
+        const sum = smallArr[ii] + bigArr[ii] + carry;
+        const smallestDigit = sum % 10;
         // assign smallestDigit to ii + 1 since resultArr is one element longer than bigArr
         resultArr[ii + 1] = smallestDigit;
         carry = Math.floor(sum / 10);
     }
+    resultArr[0] = carry;
 
     return resultArr;
 }

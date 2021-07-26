@@ -20,7 +20,7 @@ function rotateMatrix(matrix) {
 function rotateLayerOfMatrix(matrix, layerIndex) {
     const startIndex = layerIndex;
     const endIndex = matrix.length - 1 - layerIndex; // ex. for a 5 x 5 matrix, layer 1 ends at 5 - 1 - 1 = 3
-    for (let ii = startIndex; ii < endIndex; ii++) {
+    for (let ii = 0; ii < endIndex - startIndex; ii++) {
         // store top element
         const storedTopElem = matrix[startIndex][startIndex + ii];
         // rotate left to top

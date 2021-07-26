@@ -21,6 +21,13 @@ function printElementsInLayer(matrix, layerIndex) {
         firstRow = layerIndex,
         lastRow = matrix.length - 1 - layerIndex;
 
+    // in the case where we're at the center-most layer, and that layer only
+    // has one element, we should just print it
+    if (lastRow === layerIndex && lastColumm === layerIndex) {
+        console.log(matrix[layerIndex][layerIndex]);
+        return;
+    }
+
     // print top
     // note that this does not include the rightmost element of the first row.
     // that element belongs to the right column
@@ -51,4 +58,5 @@ function printElementsInLayer(matrix, layerIndex) {
 }
 
 // this should print 2, 3, 1, 6, 7, 9, 11, 4, 8, 12, 13, 5
-console.log(printElementsSpiralOrder([[2, 3, 1, 6], [12, 13, 5, 7], [8, 4, 11, 9]]));
+// console.log(printElementsSpiralOrder([[2, 3, 1, 6], [12, 13, 5, 7], [8, 4, 11, 9]]));
+console.log(printElementsSpiralOrder([[6, 9, 7]]));

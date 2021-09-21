@@ -1,22 +1,6 @@
-/**
- * @param {number[]} nums
- * @param {number} k
- * @return {number}
- */
-var findKthLargest = function (nums, k) {
-    const maxHeap = new MaxHeap(nums);
-
-    let extractedNum = null;
-    for (let ii = 0; ii < k; ii++) {
-        extractedNum = maxHeap.extractMax();
-    }
-
-    return extractedNum;
-};
-
-class MaxHeap {
+class MinHeap {
     constructor(numsArr) {
-        this.numsArr = [0, ...numsArr];
+        this.numsArr = numsArr ? [0, ...numsArr] : [0];
         this.build(this.numsArr);
     }
 
@@ -27,28 +11,44 @@ class MaxHeap {
         for (let currentIndex = lastParentIndex; currentIndex >= 1; currentIndex--) {
             this.bubbleDown(currentIndex);
         }
-        console.info('heap: ', this.numsArr);
     }
 
-    extractMax() {
+    insertKeepCurrentSize(number) {
+        this.numsArr.push(number);
         this.swap(1, this.numsArr.length - 1);
-        const extractedMaxNum = this.numsArr.pop();
+        this.numsArr.pop();
+        this.bubbleDown(1);
+    }
+
+    getLength() {
+        return this.numsArr.length - 1; // -1 is to account for the 0 in front
+    }
+
+    insert(number) {
+        // insert at the end of array
+        this.numsArr.push(number);
+        this.bubbleUp(this.numsArr.length - 1);
+    }
+
+    peek() {
+        return this.numsArr[1];
+    }
+
+    extractMin() {
+        this.swap(1, this.numsArr.length - 1);
+        const extractedMinNum = this.numsArr.pop();
         // keep bubbling down to fix our numsArr into legit max heap
         this.bubbleDown(1);
-        return extractedMaxNum;
+        return extractedMinNum;
     }
 
     bubbleUp(startingIndex) {
         let currentIndex = startingIndex;
         let parentIndex = Math.floor(currentIndex / 2);
-        while (currentIndex > 1) {
-            if (this.numsArr[currentIndex] < this.numsArr[parentIndex]) {
-                this.swap(currentIndex, parentIndex);
-                currentIndex = parentIndex;
-                parentIndex = Math.floor(currentIndex / 2);
-            } else {
-                return;
-            }
+        while (currentIndex > 1 && this.numsArr[currentIndex] < this.numsArr[parentIndex]) {
+            this.swap(currentIndex, parentIndex);
+            currentIndex = parentIndex;
+            parentIndex = Math.floor(currentIndex / 2);
         }
     }
 
@@ -59,9 +59,9 @@ class MaxHeap {
 
         while (leftChildIndex < this.numsArr.length) {
             const leftChildNum = this.numsArr[leftChildIndex];
-            const rightChildNum = this.numsArr[rightChildIndex] !== undefined ? this.numsArr[rightChildIndex] : -Infinity;
-            const indexToCompare = leftChildNum >= rightChildNum ? leftChildIndex : rightChildIndex;
-            if (this.numsArr[currentIndex] < this.numsArr[indexToCompare]) {
+            const rightChildNum = this.numsArr[rightChildIndex] !== undefined ? this.numsArr[rightChildIndex] : Infinity;
+            const indexToCompare = leftChildNum <= rightChildNum ? leftChildIndex : rightChildIndex;
+            if (this.numsArr[currentIndex] > this.numsArr[indexToCompare]) {
                 this.swap(currentIndex, indexToCompare);
                 currentIndex = indexToCompare;
                 leftChildIndex = 2 * currentIndex;
@@ -75,4 +75,5 @@ class MaxHeap {
     swap(index1, index2) {
         [this.numsArr[index1], this.numsArr[index2]] = [this.numsArr[index2], this.numsArr[index1]];
     }
+
 }
